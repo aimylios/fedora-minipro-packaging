@@ -1,0 +1,40 @@
+From d3ca0e6010305b980d2216d822e517383f425965 Mon Sep 17 00:00:00 2001
+From: Lubomir Rintel <lkundrak@v3.sk>
+Date: Wed, 1 Oct 2014 12:34:53 +0200
+Subject: [PATCH] No libusb_strerror() in RHEL 7
+
+---
+ minipro.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/minipro.c b/minipro.c
+index 763ce56..334bd4f 100644
+--- a/minipro.c
++++ b/minipro.c
+@@ -20,7 +20,7 @@ minipro_handle_t *minipro_open(device_t *device) {
+ 	ret = libusb_init(&(handle->ctx));
+ 	if(ret < 0) {
+ 		free(handle);
+-		ERROR2("Error initializing libusb: %s", libusb_strerror(ret));
++		ERROR2("Error initializing libusb: %d", ret);
+ 	}
+ 
+ 	handle->usb_handle = libusb_open_device_with_vid_pid(handle->ctx, 0x04d8, 0xe11c);
+@@ -59,11 +59,11 @@ static unsigned int msg_transfer(minipro_handle_t *handle, unsigned char *buf, i
+ 	int bytes_transferred;
+ 	int ret;
+ 	ret = libusb_claim_interface(handle->usb_handle, 0);
+-	if(ret != 0) ERROR2("IO error: claim_interface: %s\n", libusb_strerror(ret));
++	if(ret != 0) ERROR2("IO error: claim_interface: %d\n", ret);
+ 	ret = libusb_bulk_transfer(handle->usb_handle, (1 | direction), buf, length, &bytes_transferred, 0);
+-	if(ret != 0) ERROR2("IO error: bulk_transfer: %s\n", libusb_strerror(ret));
++	if(ret != 0) ERROR2("IO error: bulk_transfer: %d\n", ret);
+ 	ret = libusb_release_interface(handle->usb_handle, 0);
+-	if(ret != 0) ERROR2("IO error: release_interface: %s\n", libusb_strerror(ret));
++	if(ret != 0) ERROR2("IO error: release_interface: %d\n", ret);
+ 	if(bytes_transferred != length) ERROR2("IO error: expected %d bytes but %d bytes transferred\n", length, bytes_transferred);
+ 	return bytes_transferred;
+ }
+-- 
+1.9.3
+
