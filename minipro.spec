@@ -3,7 +3,7 @@
 
 Name:           minipro
 Version:        0
-Release:        4.20140902git%{shortcommit}%{?dist}
+Release:        4.20140902git%{shortcommit}%{?dist}.1
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -12,6 +12,7 @@ Group:          System Environment/Base
 License:        GPLv2+
 URL:            https://github.com/vdudouyt/minipro
 Source0:        https://github.com/vdudouyt/minipro/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
+Patch0:         0001-No-libusb_strerror-in-RHEL-7.patch
 
 BuildRequires:  pkgconfig(libusb-1.0)
 Requires:       udev
@@ -24,6 +25,7 @@ various BIOSes and EEPROMs).
 
 %prep
 %setup -q -n %{name}-%{commit}
+%patch0 -p1
 
 
 %build
@@ -54,6 +56,9 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
+* Wed Oct 01 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-4.20140902git1b451ae.1
+- Fix el6 & el7 build
+
 * Wed Oct 01 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-4.20140902git1b451ae
 - Rebase to a later upstream snapshot
 - Drop upstreamed patches
