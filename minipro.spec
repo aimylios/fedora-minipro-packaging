@@ -1,9 +1,9 @@
-%global commit 6f36b9eff8b82d5aa89f2fb07b0940383327a896
+%global commit 1b451aeac4135848ba32360cb4b198d68532f1c8
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           minipro
 Version:        0
-Release:        3.20140902git%{shortcommit}%{?dist}
+Release:        4.20140902git%{shortcommit}%{?dist}
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -12,7 +12,6 @@ Group:          System Environment/Base
 License:        GPLv2+
 URL:            https://github.com/vdudouyt/minipro
 Source0:        https://github.com/vdudouyt/minipro/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
-Patch0:         0001-Remove-the-shebang-from-the-completion-file.patch
 
 BuildRequires:  pkgconfig(libusb-1.0)
 Requires:       udev
@@ -25,7 +24,6 @@ various BIOSes and EEPROMs).
 
 %prep
 %setup -q -n %{name}-%{commit}
-%patch0 -p1
 
 
 %build
@@ -56,6 +54,10 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
+* Wed Oct 01 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-4.20140902git1b451ae
+- Rebase to a later upstream snapshot
+- Drop upstreamed patches
+
 * Tue Sep 30 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-3.20140902git6f36b9e
 - Patch away the shebang from completion file (Mihkel Vain, #1128356)
 
