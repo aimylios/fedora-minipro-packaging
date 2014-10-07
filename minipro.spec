@@ -3,7 +3,7 @@
 
 Name:           minipro
 Version:        0
-Release:        4.20140902git%{shortcommit}%{?dist}
+Release:        5.20140902git%{shortcommit}%{?dist}
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -12,9 +12,13 @@ Group:          System Environment/Base
 License:        GPLv2+
 URL:            https://github.com/vdudouyt/minipro
 Source0:        https://github.com/vdudouyt/minipro/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
+Patch1:         0001-miniprohex-Fix-temporary-file-handling.patch
+Patch2:         0002-Improve-diagnostics-a-bit.patch
+Patch3:         0003-Fix-support-for-devices-with-irregular-memory-sizes.patch
 
 BuildRequires:  pkgconfig(libusb-1.0)
 Requires:       udev
+Requires:       /usr/bin/srec_cat
 
 %description
 Programming utility compatible with Minipro TL866CS and Minipro TL866A
@@ -54,6 +58,10 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
+* Tue Oct 07 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-5.20140902git1b451ae
+- Fix insecure temporary file
+- Fix PIC12 support
+
 * Wed Oct 01 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-4.20140902git1b451ae
 - Rebase to a later upstream snapshot
 - Drop upstreamed patches
