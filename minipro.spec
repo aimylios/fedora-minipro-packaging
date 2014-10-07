@@ -3,7 +3,7 @@
 
 Name:           minipro
 Version:        0
-Release:        5.20140902git%{shortcommit}%{?dist}
+Release:        6.20140902git%{shortcommit}%{?dist}
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -28,6 +28,9 @@ various BIOSes and EEPROMs).
 
 %prep
 %setup -q -n %{name}-%{commit}
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 
 %build
@@ -58,6 +61,9 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
+* Tue Oct 07 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20140902git1b451ae
+- Actually apply the patches...
+
 * Tue Oct 07 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-5.20140902git1b451ae
 - Fix insecure temporary file
 - Fix PIC12 support
