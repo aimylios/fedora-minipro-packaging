@@ -1,9 +1,9 @@
-%global commit 1b451aeac4135848ba32360cb4b198d68532f1c8
+%global commit 6a561bedf960861a312c77e3cdf236e088478b10
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           minipro
 Version:        0
-Release:        4.20140902git%{shortcommit}%{?dist}.2
+Release:        6.20141011git%{shortcommit}%{?dist}.1
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -13,9 +13,7 @@ License:        GPLv2+
 URL:            https://github.com/vdudouyt/minipro
 Source0:        https://github.com/vdudouyt/minipro/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
 Patch0:         0001-No-libusb_strerror-in-RHEL-7.patch
-Patch1:         0001-miniprohex-Fix-temporary-file-handling.patch
-Patch2:         0002-Improve-diagnostics-a-bit.patch
-Patch3:         0003-Fix-support-for-devices-with-irregular-memory-sizes.patch
+Patch1:         0001-Fix-I-option-in-usage-info.patch
 
 BuildRequires:  pkgconfig(libusb-1.0)
 Requires:       udev
@@ -31,8 +29,6 @@ various BIOSes and EEPROMs).
 %setup -q -n %{name}-%{commit}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 
 %build
@@ -63,7 +59,14 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
-* Tue Oct 07 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-4.20140902git1b451ae.2
+* Sat Oct 11 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141011git6a561be.1
+- Rebase to a later upstream snapshot
+- Drop upstreamed patches
+
+* Tue Oct 07 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20140902git1b451ae
+- Actually apply the patches...
+
+* Tue Oct 07 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-5.20140902git1b451ae
 - Fix insecure temporary file
 - Fix PIC12 support
 

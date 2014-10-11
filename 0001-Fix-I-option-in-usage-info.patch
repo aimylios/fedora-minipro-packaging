@@ -1,0 +1,25 @@
+From 79cb420393e4ede48a10ed7ed8eb5cce5543231a Mon Sep 17 00:00:00 2001
+From: Lubomir Rintel <lkundrak@v3.sk>
+Date: Sat, 11 Oct 2014 08:01:20 +0200
+Subject: [PATCH] Fix -I option in usage info
+
+---
+ main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/main.c b/main.c
+index c6b5813..84bf5be 100644
+--- a/main.c
++++ b/main.c
+@@ -34,7 +34,7 @@ void print_help_and_exit(const char *progname) {
+ 		"	-p <device>	Specify device\n"
+ 		"	-c <type>	Specify memory type (optional)\n"
+ 		"			Possible values: code, data, config\n"
+-		"	-i		Use ICSP\n";
++		"	-i		Use ICSP\n"
+ 		"	-I		Use ICSP (without enabling Vcc)\n";
+ 	fprintf(stderr, usage, progname);
+ 	exit(-1);
+-- 
+2.1.0
+
