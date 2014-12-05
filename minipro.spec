@@ -1,9 +1,9 @@
-%global commit 6a561bedf960861a312c77e3cdf236e088478b10
+%global commit 0107a7ab620bd2a6151b19eb75f824c67353c4cd
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           minipro
 Version:        0
-Release:        6.20141011git%{shortcommit}%{?dist}
+Release:        6.20141205git%{shortcommit}%{?dist}
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -12,7 +12,6 @@ Group:          System Environment/Base
 License:        GPLv2+
 URL:            https://github.com/vdudouyt/minipro
 Source0:        https://github.com/vdudouyt/minipro/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
-Patch0:         0001-Fix-I-option-in-usage-info.patch
 
 BuildRequires:  pkgconfig(libusb-1.0)
 Requires:       udev
@@ -26,7 +25,6 @@ various BIOSes and EEPROMs).
 
 %prep
 %setup -q -n %{name}-%{commit}
-%patch0 -p1
 
 
 %build
@@ -57,6 +55,11 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
+* Fri Dec 05 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141205git0107a7a
+- Fix ATMEGA32 support
+- Rebase to a later upstream snapshot
+- Drop upstreamed patches
+
 * Sat Oct 11 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141011git6a561be
 - Rebase to a later upstream snapshot
 - Drop upstreamed patches
