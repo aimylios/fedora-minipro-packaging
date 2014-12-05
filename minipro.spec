@@ -3,7 +3,7 @@
 
 Name:           minipro
 Version:        0
-Release:        6.20141011git%{shortcommit}%{?dist}.1
+Release:        6.20141011git%{shortcommit}%{?dist}.2
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -14,6 +14,7 @@ URL:            https://github.com/vdudouyt/minipro
 Source0:        https://github.com/vdudouyt/minipro/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
 Patch0:         0001-No-libusb_strerror-in-RHEL-7.patch
 Patch1:         0001-Fix-I-option-in-usage-info.patch
+Patch2:         0001-Fix-config-read-for-AVR-devices-with-one-or-two-fuse.patch
 
 BuildRequires:  pkgconfig(libusb-1.0)
 Requires:       udev
@@ -59,6 +60,9 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
+* Fri Dec 05 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141011git6a561be.2
+- Fix ATMEGA32 support
+
 * Sat Oct 11 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141011git6a561be.1
 - Rebase to a later upstream snapshot
 - Drop upstreamed patches
