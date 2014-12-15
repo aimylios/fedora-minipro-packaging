@@ -1,9 +1,9 @@
-%global commit 6a561bedf960861a312c77e3cdf236e088478b10
+%global commit d6dee16646e07a5593d76073a0f1b7eec98f652d
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           minipro
 Version:        0
-Release:        6.20141011git%{shortcommit}%{?dist}.2
+Release:        6.20141215git%{shortcommit}%{?dist}.1
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -13,8 +13,6 @@ License:        GPLv2+
 URL:            https://github.com/vdudouyt/minipro
 Source0:        https://github.com/vdudouyt/minipro/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
 Patch0:         0001-No-libusb_strerror-in-RHEL-7.patch
-Patch1:         0001-Fix-I-option-in-usage-info.patch
-Patch2:         0001-Fix-config-read-for-AVR-devices-with-one-or-two-fuse.patch
 
 BuildRequires:  pkgconfig(libusb-1.0)
 Requires:       udev
@@ -29,7 +27,6 @@ various BIOSes and EEPROMs).
 %prep
 %setup -q -n %{name}-%{commit}
 %patch0 -p1
-%patch1 -p1
 
 
 %build
@@ -60,8 +57,15 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
+* Mon Dec 15 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141215gitd6dee16
+- Rebase to a later upstream snapshot
+
 * Fri Dec 05 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141011git6a561be.2
 - Fix ATMEGA32 support
+
+* Fri Dec 05 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141205git0107a7a
+- Rebase to a later upstream snapshot
+- Drop upstreamed patches
 
 * Sat Oct 11 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141011git6a561be.1
 - Rebase to a later upstream snapshot
