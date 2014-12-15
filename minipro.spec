@@ -1,9 +1,9 @@
-%global commit 0107a7ab620bd2a6151b19eb75f824c67353c4cd
+%global commit d6dee16646e07a5593d76073a0f1b7eec98f652d
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           minipro
 Version:        0
-Release:        6.20141205git%{shortcommit}%{?dist}
+Release:        6.20141215git%{shortcommit}%{?dist}
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -55,6 +55,9 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
+* Mon Dec 15 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141215gitd6dee16
+- Rebase to a later upstream snapshot
+
 * Fri Dec 05 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141205git0107a7a
 - Fix ATMEGA32 support
 - Rebase to a later upstream snapshot
