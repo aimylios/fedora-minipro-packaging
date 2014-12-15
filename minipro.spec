@@ -16,7 +16,9 @@ Patch0:         0001-No-libusb_strerror-in-RHEL-7.patch
 
 BuildRequires:  pkgconfig(libusb-1.0)
 Requires:       udev
+%if 0%{?rhel} == 0
 Requires:       /usr/bin/srec_cat
+%endif
 
 %description
 Programming utility compatible with Minipro TL866CS and Minipro TL866A
@@ -50,13 +52,20 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 %files
 %{_sysconfdir}/bash_completion.d
 %{_bindir}/minipro
+%if 0%{?rhel}
+%exclude %{_bindir}/miniprohex
+%else
 %{_bindir}/miniprohex
+%endif
 %{_bindir}/minipro-query-db
 %{_prefix}/lib/udev/rules.d/80-minipro.rules
 %{_mandir}/man1/minipro.1*
 
 
 %changelog
+* Mon Dec 15 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141215gitd6dee16.1
+- Don't require srecord on el7
+
 * Mon Dec 15 2014 Lubomir Rintel <lkundrak@v3.sk> - 0-6.20141215gitd6dee16
 - Rebase to a later upstream snapshot
 
