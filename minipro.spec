@@ -1,9 +1,9 @@
-%global commit d6dee16646e07a5593d76073a0f1b7eec98f652d
+%global commit 60dda45cb4f8b3cebb91cec0cbb0c4195b99485f
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           minipro
-Version:        0
-Release:        7.20141215git%{shortcommit}%{?dist}
+Version:        0.0.1
+Release:        1%{?dist}
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -32,7 +32,8 @@ make %{?_smp_mflags} CFLAGS='%{optflags}'
 
 
 %install
-make install DESTDIR=%{buildroot}
+make install DESTDIR=%{buildroot} \
+        COMPLETIONS_DIR=%{buildroot}%{_datadir}/bash-completion/completions
 
 
 %post
@@ -46,7 +47,7 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %files
-%{_sysconfdir}/bash_completion.d
+%{_datadir}/bash-completion/completions
 %{_bindir}/minipro
 %{_bindir}/miniprohex
 %{_bindir}/minipro-query-db
@@ -55,6 +56,9 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
+* Mon Aug 03 2015 Lubomir Rintel <lkundrak@v3.sk> - 0.0.1-1
+- Update to a tagged release
+
 * Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0-7.20141215gitd6dee16
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
