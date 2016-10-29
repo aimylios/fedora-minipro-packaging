@@ -1,9 +1,9 @@
-%global commit 60dda45cb4f8b3cebb91cec0cbb0c4195b99485f
+%global commit 484abde7d924404f5bb30ebc66a80d93b5a65c3e
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           minipro
-Version:        0.0.1
-Release:        2%{?dist}
+Version:        0.1
+Release:        1.20161029git%{shortcommit}%{?dist}
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -12,6 +12,12 @@ Group:          System Environment/Base
 License:        GPLv2+
 URL:            https://github.com/vdudouyt/minipro
 Source0:        https://github.com/vdudouyt/minipro/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
+
+Patch0:         https://github.com/lkundrak/minipro/commit/e9953f8.patch#/0001-write_page_ram-fix-a-typo.patch
+Patch1:         https://github.com/lkundrak/minipro/commit/3e26627.patch#/0002-msg_init-the-memory-size-is-4-octets.patch
+Patch2:         https://github.com/lkundrak/minipro/commit/b303092.patch#/0001-Revert-Using-PREFIX-instead-of-the-DESTDIR-confusion.patch
+Patch3:         https://github.com/lkundrak/minipro/commit/38f5c60.patch#/0002-Install-the-bash-completion-files-in-to-a-proper-loc.patch
+Patch4:         https://github.com/lkundrak/minipro/commit/bc31cbc.patch#/0003-Use-PREFIX-to-override-install-location.patch
 
 BuildRequires:  pkgconfig(libusb-1.0)
 Requires:       udev
@@ -25,6 +31,11 @@ various BIOSes and EEPROMs).
 
 %prep
 %setup -q -n %{name}-%{commit}
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 
 %build
@@ -32,7 +43,7 @@ make %{?_smp_mflags} CFLAGS='%{optflags}'
 
 
 %install
-make install DESTDIR=%{buildroot} \
+make install PREFIX=%{buildroot}%{_prefix} \
         COMPLETIONS_DIR=%{buildroot}%{_datadir}/bash-completion/completions
 
 
@@ -56,6 +67,9 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
+* Sat Oct 29 2016 Lubomir Rintel <lkundrak@v3.sk> - 0.1-1.20161029git484abde
+- Update to a later snapshot
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 0.0.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 

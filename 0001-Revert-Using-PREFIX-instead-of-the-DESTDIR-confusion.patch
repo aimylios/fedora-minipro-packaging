@@ -1,0 +1,42 @@
+From b3030921147c47dadd312887c4879eb2391e7492 Mon Sep 17 00:00:00 2001
+From: Lubomir Rintel <lkundrak@v3.sk>
+Date: Sat, 29 Oct 2016 13:35:45 +0200
+Subject: [PATCH] Revert "Using $PREFIX instead of the $DESTDIR confusion."
+
+This is mostly wrong. DESTDIR is conventionally used to override the
+install root when doing an out-of-tree install (such as on a package
+build), while PREFIX denotes the actual install tree (e.g. /usr vs.
+/usr/local).
+
+Also the commit changed the udev rules dir to /etc, which is meant for
+*user* configuration, not configuration shipped with a package.
+
+A commit that adds PREFIX properly will follow.
+
+This reverts commit 455dd5b5b135eb99f2717d68ad8b1b8cbab97c32.
+---
+ Makefile | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index f7627c5..eadd571 100644
+--- a/Makefile
++++ b/Makefile
+@@ -9,13 +9,11 @@ TESTS=$(wildcard tests/test_*.c);
+ OBJCOPY=objcopy
+ VERSION=0.1
+ 
+-PREFIX = /usr/local
+-
+ DIST_DIR = $(MINIPRO)-$(VERSION)
+-BIN_DIR = $(PREFIX)/bin/
+-UDEV_RULES_DIR = /etc/udev/rules.d/
+-MAN_DIR = $(PREFIX)/share/man/man1/
+-COMPLETIONS_DIR = /etc/bash_completion.d/
++BIN_DIR=$(DESTDIR)/usr/bin/
++UDEV_RULES_DIR=$(DESTDIR)/usr/lib/udev/rules.d/
++MAN_DIR=$(DESTDIR)/usr/share/man/man1/
++COMPLETIONS_DIR=$(DESTDIR)/etc/bash_completion.d/
+ 
+ libusb_CFLAGS = `pkg-config --cflags libusb-1.0`
+ libusb_LIBS = `pkg-config --libs libusb-1.0`
