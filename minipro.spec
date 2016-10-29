@@ -3,7 +3,7 @@
 
 Name:           minipro
 Version:        0.1
-Release:        1.20161029git%{shortcommit}%{?dist}
+Release:        2.20161029git%{shortcommit}%{?dist}
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -15,9 +15,10 @@ Source0:        https://github.com/vdudouyt/minipro/archive/%{commit}/%{name}-%{
 
 Patch0:         https://github.com/lkundrak/minipro/commit/e9953f8.patch#/0001-write_page_ram-fix-a-typo.patch
 Patch1:         https://github.com/lkundrak/minipro/commit/3e26627.patch#/0002-msg_init-the-memory-size-is-4-octets.patch
-Patch2:         https://github.com/lkundrak/minipro/commit/b303092.patch#/0001-Revert-Using-PREFIX-instead-of-the-DESTDIR-confusion.patch
-Patch3:         https://github.com/lkundrak/minipro/commit/38f5c60.patch#/0002-Install-the-bash-completion-files-in-to-a-proper-loc.patch
-Patch4:         https://github.com/lkundrak/minipro/commit/bc31cbc.patch#/0003-Use-PREFIX-to-override-install-location.patch
+Patch2:         https://github.com/lkundrak/minipro/commit/88c9553.patch#/0003-udev-add-uaccess-tag.patch
+Patch3:         https://github.com/lkundrak/minipro/commit/b303092.patch#/0001-Revert-Using-PREFIX-instead-of-the-DESTDIR-confusion.patch
+Patch4:         https://github.com/lkundrak/minipro/commit/38f5c60.patch#/0002-Install-the-bash-completion-files-in-to-a-proper-loc.patch
+Patch5:         https://github.com/lkundrak/minipro/commit/bc31cbc.patch#/0003-Use-PREFIX-to-override-install-location.patch
 
 BuildRequires:  pkgconfig(libusb-1.0)
 Requires:       udev
@@ -36,6 +37,7 @@ various BIOSes and EEPROMs).
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 
 %build
@@ -67,6 +69,9 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
+* Sat Oct 29 2016 Lubomir Rintel <lkundrak@v3.sk> - 0.1-2.20161029git484abde
+- Fix access for unprivileged users
+
 * Sat Oct 29 2016 Lubomir Rintel <lkundrak@v3.sk> - 0.1-1.20161029git484abde
 - Update to a later snapshot
 
