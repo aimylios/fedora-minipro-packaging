@@ -3,7 +3,7 @@
 
 Name:           minipro
 Version:        0.1
-Release:        2.20161103git%{shortcommit}%{?dist}
+Release:        3.20161103git%{shortcommit}%{?dist}
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 Group:          System Environment/Base
@@ -12,6 +12,9 @@ Group:          System Environment/Base
 License:        GPLv2+
 URL:            https://github.com/vdudouyt/minipro
 Source0:        https://github.com/vdudouyt/minipro/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
+
+# https://github.com/vdudouyt/minipro/pull/68
+Patch0:         https://github.com/lkundrak/minipro/commit/48fb5e1a.patch#/0001-udev-split-the-uaccess-rule-into-a-separate-file.patch
 
 BuildRequires:  pkgconfig(libusb-1.0)
 Requires:       udev
@@ -25,6 +28,7 @@ various BIOSes and EEPROMs).
 
 %prep
 %setup -q -n %{name}-%{commit}
+%patch0 -p1
 
 
 %build
@@ -51,11 +55,14 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 %{_bindir}/minipro
 %{_bindir}/miniprohex
 %{_bindir}/minipro-query-db
-%{_prefix}/lib/udev/rules.d/80-minipro.rules
+%{_prefix}/lib/udev/rules.d/*-minipro.rules
 %{_mandir}/man1/minipro.1*
 
 
 %changelog
+* Thu Jan 12 2017 Lubomir Rintel <lkundrak@v3.sk> - 0.1-3.20161103git484abde
+- Fix the udev rule
+
 * Thu Nov 03 2016 Lubomir Rintel <lkundrak@v3.sk> - 0.1-2.20161103git484abde
 - Upstreamed the patches
 
