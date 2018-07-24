@@ -16,6 +16,7 @@ Source0:        https://github.com/vdudouyt/minipro/archive/%{commit}/%{name}-%{
 # https://github.com/vdudouyt/minipro/pull/68
 Patch0:         https://github.com/lkundrak/minipro/commit/48fb5e1a.patch#/0001-udev-split-the-uaccess-rule-into-a-separate-file.patch
 
+BuildRequires:  gcc
 BuildRequires:  pkgconfig(libusb-1.0)
 Requires:       udev
 Requires:       /usr/bin/srec_cat
