@@ -6,7 +6,6 @@ Version:        0.1
 Release:        8.20161103git%{shortcommit}%{?dist}
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
-Group:          System Environment/Base
 # From the bundled debian/copyright file,
 # GPLv3 text is shipped though
 License:        GPLv2+
