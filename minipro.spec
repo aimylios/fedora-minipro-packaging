@@ -3,7 +3,7 @@
 
 Name:           minipro
 Version:        0.1
-Release:        8.20161103git%{shortcommit}%{?dist}
+Release:        9.20161103git%{shortcommit}%{?dist}
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 # From the bundled debian/copyright file,
@@ -60,6 +60,9 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 
 
 %changelog
+* Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.1-9.20161103gite897666
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.1-8.20161103gite897666
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
