@@ -1,0 +1,51 @@
+From f0a752dbb1af845c29f97a072e600eebc45335d7 Mon Sep 17 00:00:00 2001
+From: Lubomir Rintel <lkundrak@v3.sk>
+Date: Sat, 9 Feb 2019 18:38:36 +0100
+Subject: [PATCH 1/3] Revert "Renamed Debian udev rules file"
+
+This is not a Debian udev rules file. It works on any reasonably recent
+Linux distribution. Bring it to the original, correct location.
+
+See commit 88c9553cf ('udev: add uaccess tag').
+
+This reverts commit 0ad5a2a01e6233f4173ed49ee19a94f1e71d805d.
+---
+ README.md                                                  | 2 +-
+ debian/rules                                               | 2 +-
+ udev/{debian/60-minipro.rules => rules.d/80-minipro.rules} | 0
+ 3 files changed, 2 insertions(+), 2 deletions(-)
+ rename udev/{debian/60-minipro.rules => rules.d/80-minipro.rules} (100%)
+
+diff --git a/README.md b/README.md
+index c3f8ad5..320f26b 100644
+--- a/README.md
++++ b/README.md
+@@ -54,7 +54,7 @@ permissions.
+ 
+ #### Debian/Ubuntu
+ ```nohighlight
+-sudo cp udev/debian/60-minipro.rules /etc/udev/rules.d/
++sudo cp udev/rules.d/80-minipro.rules /etc/udev/rules.d/
+ sudo udevadm trigger
+ ```
+ You'll also have to add your regular user to the `plugdev` system
+diff --git a/debian/rules b/debian/rules
+index 24e858f..dd45c1b 100755
+--- a/debian/rules
++++ b/debian/rules
+@@ -16,7 +16,7 @@ override_dh_auto_install:
+ 	    PREFIX=/usr
+ 
+ override_dh_installudev:
+-	cp udev/debian/60-minipro.rules debian/minipro.udev
++	cp udev/rules.d/80-minipro.rules debian/minipro.udev
+ 	dh_installudev
+ 	rm -f debian/minipro.udev
+ 
+diff --git a/udev/debian/60-minipro.rules b/udev/rules.d/80-minipro.rules
+similarity index 100%
+rename from udev/debian/60-minipro.rules
+rename to udev/rules.d/80-minipro.rules
+-- 
+2.20.1
+

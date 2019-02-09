@@ -1,0 +1,61 @@
+From 12c60b3778b1cb80a3dd50f9dd3ecfa972154478 Mon Sep 17 00:00:00 2001
+From: Lubomir Rintel <lkundrak@v3.sk>
+Date: Sat, 9 Feb 2019 18:41:10 +0100
+Subject: [PATCH 2/3] Revert "Added Centos udev rules and updated installation
+ instructions."
+
+The .rules file created a world-writable device. That is wrong. The
+plugdev groups should have been used; and it actually already is in the
+existing rules file.
+
+See also 78455b23 ('Avoid world-writable device').
+
+This mostly reverts commit b2117ef0a13f1fee9132789d7e6819f1d31afc6e.
+Some useful README.md changes were kept.
+---
+ README.md                     | 9 ---------
+ udev/centos7/80-minipro.rules | 5 -----
+ 2 files changed, 14 deletions(-)
+ delete mode 100644 udev/centos7/80-minipro.rules
+
+diff --git a/README.md b/README.md
+index 320f26b..2e28580 100644
+--- a/README.md
++++ b/README.md
+@@ -52,7 +52,6 @@ If you want to access the programmer as a regular user, you'll have to
+ configure udev to recognize the programmer and set appropriate access
+ permissions.
+ 
+-#### Debian/Ubuntu
+ ```nohighlight
+ sudo cp udev/rules.d/80-minipro.rules /etc/udev/rules.d/
+ sudo udevadm trigger
+@@ -65,14 +64,6 @@ sudo usermod -a -G plugdev YOUR-USER
+ Note that this change will only become effective after your next
+ login.
+ 
+-#### CentOS 7
+-```nohighlight
+-sudo cp udev/centos7/80-minipro.rules /etc/udev/rules.d/
+-sudo udevadm control --reload-rules
+-```
+-The CentOS rules file currently make the programmer device writable for 
+-all users.
+-
+ ### Bash completion (optional)
+ 
+ Bash users may want to optionally install the provided completion file:
+diff --git a/udev/centos7/80-minipro.rules b/udev/centos7/80-minipro.rules
+deleted file mode 100644
+index d76fa59..0000000
+--- a/udev/centos7/80-minipro.rules
++++ /dev/null
+@@ -1,5 +0,0 @@
+-BUS!="usb", ACTION!="add", SUBSYSTEM!=="usb_device", GOTO="minipro_rules_end"
+-
+-ATTRS{idVendor}=="04d8", ATTRS{idProduct}=="e11c", MODE="0666"
+-
+-LABEL="minipro_rules_end"
+-- 
+2.20.1
+

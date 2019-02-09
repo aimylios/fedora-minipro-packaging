@@ -1,19 +1,24 @@
-%global commit e897666349cb2722edb920ed5c10ae795a2a584b
+%global commit 57b293d603c5dc7217c3439a88809605d09d7293
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           minipro
-Version:        0.1
-Release:        9.20161103git%{shortcommit}%{?dist}
+Version:        0.2
+Release:        1.20181017git%{shortcommit}%{?dist}
 Summary:        Utility for MiniPro TL866A/TL866/CS programmer
 
 # From the bundled debian/copyright file,
 # GPLv3 text is shipped though
 License:        GPLv2+
-URL:            https://github.com/vdudouyt/minipro
-Source0:        https://github.com/vdudouyt/minipro/archive/%{commit}/%{name}-%{version}-%{shortcommit}.tar.gz
+URL:            https://gitlab.com/DavidGriffith/minipro
+Source0:        https://gitlab.com/DavidGriffith/minipro/-/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
+
+# https://gitlab.com/DavidGriffith/minipro/merge_requests/126
+Patch0:         0001-Revert-Renamed-Debian-udev-rules-file.patch
+Patch1:         0002-Revert-Added-Centos-udev-rules-and-updated-installat.patch
+Patch2:         0003-Revert-Remove-udev-and-bash-completion-installation-.patch
 
 # https://github.com/vdudouyt/minipro/pull/68
-Patch0:         https://github.com/lkundrak/minipro/commit/48fb5e1a.patch#/0001-udev-split-the-uaccess-rule-into-a-separate-file.patch
+Patch3:         https://github.com/lkundrak/minipro/commit/48fb5e1a.patch#/0001-udev-split-the-uaccess-rule-into-a-separate-file.patch
 
 BuildRequires:  gcc
 BuildRequires:  pkgconfig(libusb-1.0)
@@ -29,15 +34,20 @@ various BIOSes and EEPROMs).
 %prep
 %setup -q -n %{name}-%{commit}
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 
 %build
-make %{?_smp_mflags} CFLAGS='%{optflags}'
+make %{?_smp_mflags} CFLAGS='%{optflags}' BUILD_DATE_TIME='20190209.190815' \
+        GIT_BRANCH=master GIT_HASH=%{commit} \
+        GIT_HASH_SHORT=%{shortcommit} GIT_TAG=%{version}
 
 
 %install
-make install PREFIX=%{buildroot}%{_prefix} \
-        COMPLETIONS_DIR=%{buildroot}%{_datadir}/bash-completion/completions
+make install DESTDIR=%{buildroot} PREFIX=%{_prefix} \
+        COMPLETIONS_DIR=%{_datadir}/bash-completion/completions
 
 
 %post
@@ -54,12 +64,14 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 %{_datadir}/bash-completion/completions
 %{_bindir}/minipro
 %{_bindir}/miniprohex
-%{_bindir}/minipro-query-db
 %{_prefix}/lib/udev/rules.d/*-minipro.rules
 %{_mandir}/man1/minipro.1*
 
 
 %changelog
+* Sat Feb 09 2019 Lubomir Rintel <lkundrak@v3.sk> - 0.2-1.20181017git57b293d
+- Update to a newer version
+
 * Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.1-9.20161103gite897666
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
