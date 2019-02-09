@@ -22,6 +22,7 @@ Patch3:         https://github.com/lkundrak/minipro/commit/48fb5e1a.patch#/0001-
 
 BuildRequires:  gcc
 BuildRequires:  pkgconfig(libusb-1.0)
+BuildRequires:  systemd-udev
 Requires:       udev
 Requires:       /usr/bin/srec_cat
 
