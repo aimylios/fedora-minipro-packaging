@@ -1,24 +1,17 @@
-%global commit 57b293d603c5dc7217c3439a88809605d09d7293
+%global commit e6fb06822e6685886a045ae98c3c82d832bd8e9c
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Name:           minipro
-Version:        0.2
-Release:        1.20181017git%{shortcommit}%{?dist}
-Summary:        Utility for MiniPro TL866A/TL866/CS programmer
+Version:        0.3
+Release:        1.20190227git%{shortcommit}%{?dist}
+Summary:        Utility for the TL866xx series of programmers
 
-# From the bundled debian/copyright file,
-# GPLv3 text is shipped though
-License:        GPLv2+
+License:        GPLv3+
 URL:            https://gitlab.com/DavidGriffith/minipro
 Source0:        https://gitlab.com/DavidGriffith/minipro/-/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
 
-# https://gitlab.com/DavidGriffith/minipro/merge_requests/126
-Patch0:         0001-Revert-Renamed-Debian-udev-rules-file.patch
-Patch1:         0002-Revert-Added-Centos-udev-rules-and-updated-installat.patch
-Patch2:         0003-Revert-Remove-udev-and-bash-completion-installation-.patch
-
 # https://github.com/vdudouyt/minipro/pull/68
-Patch3:         https://github.com/lkundrak/minipro/commit/48fb5e1a.patch#/0001-udev-split-the-uaccess-rule-into-a-separate-file.patch
+Patch0:         0001-udev-split-the-uaccess-rule-into-a-separate-file.patch
 
 BuildRequires:  gcc
 BuildRequires:  pkgconfig(libusb-1.0)
@@ -27,21 +20,18 @@ Requires:       udev
 Requires:       /usr/bin/srec_cat
 
 %description
-Programming utility compatible with Minipro TL866CS and Minipro TL866A
-programmers. Supports more than 13000 target devices (including AVRs, PICs,
-various BIOSes and EEPROMs).
+Programming utility compatible with MiniPRO TL866CS, MiniPRO TL866A, and
+XGecu TL866II Plus programmers. Supports more than 13000 target devices
+(including AVRs, PICs, various BIOSes and EEPROMs).
 
 
 %prep
 %setup -q -n %{name}-%{commit}
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 
 %build
-make %{?_smp_mflags} CFLAGS='%{optflags}' BUILD_DATE_TIME='20190209.190815' \
+make %{?_smp_mflags} CFLAGS='%{optflags}' BUILD_DATE_TIME='20190330.085718' \
         GIT_BRANCH=master GIT_HASH=%{commit} \
         GIT_HASH_SHORT=%{shortcommit} GIT_TAG=%{version}
 
@@ -54,11 +44,13 @@ make install DESTDIR=%{buildroot} PREFIX=%{_prefix} \
 %post
 udevadm control --reload
 udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=idProduct=e11c
+udevadm trigger --subsystem-match=usb --attr-match=idVendor=0466 --attr-match=idProduct=0a53
 
 
 %postun
 udevadm control --reload
 udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=idProduct=e11c
+udevadm trigger --subsystem-match=usb --attr-match=idVendor=0466 --attr-match=idProduct=0a53
 
 
 %files
@@ -67,9 +59,15 @@ udevadm trigger --subsystem-match=usb --attr-match=idVendor=04d8 --attr-match=id
 %{_bindir}/miniprohex
 %{_prefix}/lib/udev/rules.d/*-minipro.rules
 %{_mandir}/man1/minipro.1*
+%license LICENSE
 
 
 %changelog
+* Sat Mar 30 2019 Aimylios <aimylios@xxx.xx> - 0.3-1.20190227gite6fb068
+- Update to a newer version
+- Drop upstreamed patches
+- Set license to GPLv3+ and include LICENSE file
+
 * Sat Feb 09 2019 Lubomir Rintel <lkundrak@v3.sk> - 0.2-1.20181017git57b293d
 - Update to a newer version
 

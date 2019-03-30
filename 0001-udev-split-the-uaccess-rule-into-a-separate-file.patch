@@ -1,6 +1,6 @@
-From b22e71ca47c685b82631effe925ed270ed76e016 Mon Sep 17 00:00:00 2001
+From e9278608090fd9d0635a457aae2c14dee50c56d5 Mon Sep 17 00:00:00 2001
 From: Lubomir Rintel <lkundrak@v3.sk>
-Date: Thu, 12 Jan 2017 08:54:39 +0100
+Date: Sat, 30 Mar 2019 07:30:45 +0100
 Subject: [PATCH] udev: split the uaccess rule into a separate file
 
 The seat tag for uaccess devices is added in 71-seat.rules; the 80-* rule is
@@ -11,16 +11,16 @@ not relevant to them; still both being installed at the same time
 doesn't cause any trouble.
 ---
  Makefile                      | 2 ++
- udev/rules.d/60-minipro.rules | 1 +
- udev/rules.d/80-minipro.rules | 1 -
- 3 files changed, 3 insertions(+), 1 deletion(-)
+ udev/rules.d/60-minipro.rules | 5 +++++
+ udev/rules.d/80-minipro.rules | 2 --
+ 3 files changed, 7 insertions(+), 2 deletions(-)
  create mode 100644 udev/rules.d/60-minipro.rules
 
 diff --git a/Makefile b/Makefile
-index acbe657..357bee5 100644
+index 8cc389c..ea5920c 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -103,6 +103,7 @@ install:
+@@ -119,6 +119,7 @@ install:
  	cp man/minipro.1 $(MAN_INSTDIR)/
  	if [ -n "$(UDEV_DIR)" ]; then \
  		mkdir -p $(UDEV_RULES_INSTDIR); \
@@ -28,7 +28,7 @@ index acbe657..357bee5 100644
  		cp udev/rules.d/80-minipro.rules $(UDEV_RULES_INSTDIR)/; \
  	fi
  	if [ -n "$(COMPLETIONS_DIR)" ]; then \
-@@ -114,6 +115,7 @@ uninstall:
+@@ -130,6 +131,7 @@ uninstall:
  	rm -f $(BIN_INSTDIR)/$(MINIPRO)
  	rm -f $(BIN_INSTDIR)/$(MINIPROHEX)
  	rm -f $(MAN_INSTDIR)/minipro.1
@@ -38,18 +38,27 @@ index acbe657..357bee5 100644
  
 diff --git a/udev/rules.d/60-minipro.rules b/udev/rules.d/60-minipro.rules
 new file mode 100644
-index 0000000..4b69fb4
+index 0000000..89243ff
 --- /dev/null
 +++ b/udev/rules.d/60-minipro.rules
-@@ -0,0 +1 @@
+@@ -0,0 +1,5 @@
++# TL866A/CS
 +SUBSYSTEMS=="usb", ATTRS{idVendor}=="04d8", ATTRS{idProduct}=="e11c", TAG+="uaccess"
++
++# TL866II+
++SUBSYSTEMS=="usb", ATTRS{idVendor}=="a466", ATTRS{idProduct}=="0a53", TAG+="uaccess"
 diff --git a/udev/rules.d/80-minipro.rules b/udev/rules.d/80-minipro.rules
-index 1b32040..b1976fc 100644
+index 3715d1e..203ec91 100644
 --- a/udev/rules.d/80-minipro.rules
 +++ b/udev/rules.d/80-minipro.rules
-@@ -1,2 +1 @@
+@@ -1,7 +1,5 @@
+ # TL866A/CS rules
 -SUBSYSTEMS=="usb", ATTRS{idVendor}=="04d8", ATTRS{idProduct}=="e11c", TAG+="uaccess"
  SUBSYSTEMS=="usb", ATTRS{idVendor}=="04d8", ATTRS{idProduct}=="e11c", MODE="0660", GROUP="plugdev"
+ 
+ # TL866II+ rules
+-SUBSYSTEMS=="usb", ATTRS{idVendor}=="a466", ATTRS{idProduct}=="0a53", TAG+="uaccess"
+ SUBSYSTEMS=="usb", ATTRS{idVendor}=="a466", ATTRS{idProduct}=="0a53", MODE="0660", GROUP="plugdev"
 -- 
 2.20.1
 
